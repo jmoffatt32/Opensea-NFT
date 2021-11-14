@@ -129,7 +129,15 @@ class Asset:
         current_price = {}
         try:
             current_price['symbol'] = asset_json['payment_tokens'][0]['symbol']
-            current_price['price'] = round(float(asset_json["stats"]["one_day_average_price"]), 3)
+            if float(asset_json["stats"]["one_day_average_price"]) != 0:
+                current_price['price'] = round(float(asset_json["stats"]["one_day_average_price"]), 3)
+            elif float(asset_json["stats"]["seven_day_average_price"]) != 0:
+                current_price['price'] = round(float(asset_json["stats"]["seven_day_average_price"]), 3)
+            else:
+                current_price['price'] = round(float(asset_json["stats"]["thirty_day_average_price"]), 3)
+            rarity = self.get_trait_rarity(self.get_rarest_trait())['trait_rarity_percentage']
+            multiplier = 1 + (.4 - rarity) 
+            current_price['price'] = round(multiplier * current_price['price'], 3)
             current_price['usd_price'] = round(current_price['price'] * self.get_usd(current_price['symbol']), 2)
             return current_price
         except:

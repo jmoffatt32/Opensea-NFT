@@ -47,10 +47,10 @@ else:
         st.write(f"Calculated Current Sale Price: {asset.get_current_calc_price()['price']} {asset.get_current_calc_price()['symbol']} (${asset.get_current_calc_price()['usd_price']} USD)")
         if (type(asset.get_price_purchased()['price']) == float):
             st.write(f"Price Purchased: {asset.get_price_purchased()['price']} {asset.get_price_purchased()['symbol']} (${asset.get_price_purchased()['usd_price']} USD)")
-            price_purchased = asset.get_price_purchased()['price']
         else:
             price_purchased = st.text_input("Price Purchased (USD)", key = i)
-        st.write(f"{price_purchased}")
+            if price_purchased != 0:
+                st.write(f"Price Purchased: ${price_purchased} USD")
         if asset.get_rarest_trait()['trait_count'] != 0:
             st.write(f"Rarest Trait: {asset.get_rarest_trait()['trait_type']} - {asset.get_rarest_trait()['value']}  ||  Count: {asset.get_rarest_trait()['trait_count']}  ||  {round((asset.get_trait_rarity(asset.get_rarest_trait())['trait_rarity_percentage']) * 100, 2)}%")
             #st.write(f"\tCount: {asset.get_rarest_trait()['trait_count']}")
@@ -61,4 +61,4 @@ else:
 
 
     st.subheader("Asset JSON:")
-    st.write(owner_portfolio.asset_list[0].asset_json)
+    st.write(owner_portfolio.asset_list[5].asset_json)
