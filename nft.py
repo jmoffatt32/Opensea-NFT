@@ -26,8 +26,8 @@ else:
     st.header(f"{owner_portfolio.username}'s Portfolio:")
  
     st.write(f"Value: ${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD")
-    st.write(f"P/L ($): ${round(owner_portfolio.financial_summary()['profit_loss_usd'], 2)} USD")
-    st.write(f"P/L (%): {round(owner_portfolio.financial_summary()['profit_loss_percent'], 4) * 100}%")
+    #st.write(f"P/L ($): ${round(owner_portfolio.financial_summary()['profit_loss_usd'], 2)} USD")
+    #st.write(f"P/L (%): {round(owner_portfolio.financial_summary()['profit_loss_percent'], 4) * 100}%")
     
     st.header("Assets:")
     i = 1
