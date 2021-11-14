@@ -49,7 +49,9 @@ else:
             st.write(f"Price Purchased: {asset.get_price_purchased()['price']} {asset.get_price_purchased()['symbol']} (${asset.get_price_purchased()['usd_price']} USD)")
         else:
             price_purchased = st.text_input("Price Purchased (USD)", key = i)
-            if price_purchased != 0:
+            if not price_purchased:
+                pass
+            else:
                 st.write(f"Price Purchased: ${price_purchased} USD")
         if asset.get_rarest_trait()['trait_count'] != 0:
             st.write(f"Rarest Trait: {asset.get_rarest_trait()['trait_type']} - {asset.get_rarest_trait()['value']}  ||  Count: {asset.get_rarest_trait()['trait_count']}  ||  {round((asset.get_trait_rarity(asset.get_rarest_trait())['trait_rarity_percentage']) * 100, 2)}%")
