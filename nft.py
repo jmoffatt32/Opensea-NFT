@@ -6,7 +6,7 @@ from collection import Collection
 import collection
 
 #sidebar
-owner = st.sidebar.text_input('Owner', key = 1)
+owner = st.sidebar.text_input('Owner (Wallet Address)', key = 1)
 
 #header
 st.header("Open Sea NFT API Explorer")
