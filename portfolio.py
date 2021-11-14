@@ -52,6 +52,6 @@ class Portfolio:
                 financials['current_value_usd'] += asset.get_current_price()['usd_price']
             else:
                 pass
-        financials["profit_loss_usd"] = financials['current_value_usd'] - financials['cost_basis_usd']
-        financials['profit_loss_percent'] = financials['profit_loss_usd'] / financials['cost_basis_usd']
+        #financials["profit_loss_usd"] = financials['current_value_usd'] - financials['cost_basis_usd']
+        #financials['profit_loss_percent'] = financials['profit_loss_usd'] / financials['cost_basis_usd']
         return financials
