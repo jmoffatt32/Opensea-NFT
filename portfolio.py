@@ -49,7 +49,7 @@ class Portfolio:
             else:
                 pass
             if asset.get_current_price()['usd_price'] != None:
-                financials['current_value_usd'] += asset.get_current_price()['usd_price']
+                financials['current_value_usd'] += asset.get_current_calc_price()['usd_price']
             else:
                 pass
         #financials["profit_loss_usd"] = financials['current_value_usd'] - financials['cost_basis_usd']
