@@ -25,7 +25,7 @@ else:
 
     st.header(f"{owner_portfolio.username}'s Portfolio:")
  
-    st.write(f"Value: ${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD")
+    st.markdown(f"Value: **${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD**")
     #st.write(f"P/L ($): ${round(owner_portfolio.financial_summary()['profit_loss_usd'], 2)} USD")
     #st.write(f"P/L (%): {round(owner_portfolio.financial_summary()['profit_loss_percent'], 4) * 100}%")
     
@@ -40,25 +40,31 @@ else:
         
         st.write(asset.asset_url)
         st.image(asset.image_url)
-       
-        #st.write(f"Floor Price: {asset.get_floor_price()['price']} {asset.get_floor_price()['symbol']} (${asset.get_floor_price()['usd_price']} USD)")
-        #st.write(f"Current Price: {asset.get_current_price()['price']} {asset.get_current_price()['symbol']} (${asset.get_current_price()['usd_price']} USD)")
-        #st.write(f"Average Price: {asset.get_average_price()['price']} {asset.get_average_price()['symbol']} (${asset.get_average_price()['usd_price']} USD)")
-        st.write(f"Calculated Current Sale Price: {asset.get_current_calc_price()['price']} {asset.get_current_calc_price()['symbol']} (${asset.get_current_calc_price()['usd_price']} USD)")
-        if (type(asset.get_price_purchased()['price']) == float):
-            st.write(f"Price Purchased: {asset.get_price_purchased()['price']} {asset.get_price_purchased()['symbol']} (${asset.get_price_purchased()['usd_price']} USD)")
-        else:
-            price_purchased = st.text_input("Price Purchased (USD)", key = i)
-            if not price_purchased:
-                pass
+        with st.expander("See Details:"):
+            #st.write(f"Floor Price: {asset.get_floor_price()['price']} {asset.get_floor_price()['symbol']} (${asset.get_floor_price()['usd_price']} USD)")
+            #st.write(f"Current Price: {asset.get_current_price()['price']} {asset.get_current_price()['symbol']} (${asset.get_current_price()['usd_price']} USD)")
+            #st.write(f"Average Price: {asset.get_average_price()['price']} {asset.get_average_price()['symbol']} (${asset.get_average_price()['usd_price']} USD)")
+            st.write(f"Calculated Current Sale Price: **{asset.get_current_calc_price()['price']} {asset.get_current_calc_price()['symbol']} (${asset.get_current_calc_price()['usd_price']} USD)**")
+            if (type(asset.get_price_purchased()['price']) == float):
+                st.write(f"Price Purchased: **{asset.get_price_purchased()['price']} {asset.get_price_purchased()['symbol']} (${asset.get_price_purchased()['usd_price']} USD)**")
             else:
-                st.write(f"Price Purchased: ${price_purchased} USD")
-        if asset.get_rarest_trait()['trait_count'] != 0:
-            st.write(f"Rarest Trait: {asset.get_rarest_trait()['trait_type']} - {asset.get_rarest_trait()['value']}  ||  Count: {asset.get_rarest_trait()['trait_count']}  ||  {round((asset.get_trait_rarity(asset.get_rarest_trait())['trait_rarity_percentage']) * 100, 2)}%")
-            #st.write(f"\tCount: {asset.get_rarest_trait()['trait_count']}")
-            #st.write(f"{round((asset.get_trait_rarity(asset.get_rarest_trait())['trait_rarity_percentage']) * 100, 2)}%" )
-        else: 
-            st.write("No traits available")
+                with st.form(f"{i}"):
+                    price_purchased = st.text_input("Price Purchased (USD)", key = i)
+                    submitted = st.form_submit_button("Submit")
+                    if submitted:
+                        st.write(f"Price Purchased: **${price_purchased} USD**")
+
+                # price_purchased = st.text_input("Price Purchased (USD)", key = i)
+                # if not price_purchased:
+                #     pass
+                # else:
+                #     st.write(f"Price Purchased: **${price_purchased} USD**")
+            if asset.get_rarest_trait()['trait_count'] != 0:
+                st.write(f"Rarest Trait: {asset.get_rarest_trait()['trait_type']} - {asset.get_rarest_trait()['value']}  ||  Count: **{asset.get_rarest_trait()['trait_count']}**  ||  **{round((asset.get_trait_rarity(asset.get_rarest_trait())['trait_rarity_percentage']) * 100, 2)}%**")
+                #st.write(f"\tCount: {asset.get_rarest_trait()['trait_count']}")
+                #st.write(f"{round((asset.get_trait_rarity(asset.get_rarest_trait())['trait_rarity_percentage']) * 100, 2)}%" )
+            else: 
+                st.write("No traits available")
 
 
 
