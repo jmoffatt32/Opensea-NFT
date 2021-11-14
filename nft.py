@@ -60,5 +60,5 @@ else:
 
 
 
-    st.subheader("Asset JSON:")
-    st.write(owner_portfolio.asset_list[5].asset_json)
+    #st.subheader("Asset JSON:")
+    #st.write(owner_portfolio.asset_list[5].asset_json)
