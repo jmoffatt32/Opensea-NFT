@@ -1,7 +1,7 @@
 import requests
 import streamlit as st
 from asset import Asset
-from portfolio import Portfolio
+from portfolio import Portfolio, profit_loss
 from collection import Collection
 
 
@@ -23,8 +23,8 @@ else:
     owner_portfolio = Portfolio(owner)
     mekaverse_collection = Collection(owner, 'mekaverse')
 
+    cost_basis = 0.0
     st.header(f"{owner_portfolio.username}'s Portfolio:")
-    st.markdown(f"Value: **${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD**")
 
     st.header("Assets:")
     i = 1
@@ -37,21 +37,35 @@ else:
         st.write(asset.asset_url)
         st.image(asset.image_url)
         with st.expander("See Details:"):
-            st.write(f"Calculated Current Sale Price: **{asset.get_current_calc_price()['price']} {asset.get_current_calc_price()['symbol']} (${asset.get_current_calc_price()['usd_price']} USD)**")
+            
+            #current sale price
+            if asset.get_current_calc_price()['price'] == None:
+                st.markdown("Calculated Current Sale Price: **Necessary Data Not Provided by OpenSea**")
+            else:
+                st.write(f"Calculated Current Sale Price: **{asset.get_current_calc_price()['price']} {asset.get_current_calc_price()['symbol']} (${asset.get_current_calc_price()['usd_price']} USD)**")
+            
+            #price purchased
             if (type(asset.get_price_purchased()['price']) == float):
                 st.write(f"Price Purchased: **{asset.get_price_purchased()['price']} {asset.get_price_purchased()['symbol']} (${asset.get_price_purchased()['usd_price']} USD)**")
+                cost_basis += asset.get_price_purchased()['usd_price']
             else:
                 with st.form(f"{i}"):
                     price_purchased = st.text_input("Price Purchased (USD)", key = i)
                     submitted = st.form_submit_button("Submit")
                     if submitted:
                         st.write(f"Price Purchased: **${price_purchased} USD**")
+                        cost_basis += int(price_purchased)
             try:
                 if asset.get_rarest_trait()['trait_count'] != 0:
                     st.write(f"Rarest Trait: {asset.get_rarest_trait()['trait_type']} - {asset.get_rarest_trait()['value']}  ||  Count: **{asset.get_rarest_trait()['trait_count']}**  ||  **{round((asset.get_trait_rarity(asset.get_rarest_trait())['trait_rarity_percentage']) * 100, 2)}%**")
                 else: 
-                    st.write("No traits available")
+                    st.write("No Token Traits")
             except:
-                st.write("No traits available")
+                st.write("No Token Traits")
 
-
+st.sidebar.subheader("Portfolio Details:")
+st.sidebar.markdown(f"Value: **${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD**")
+st.sidebar.markdown(f"Cost Basis: **${round(cost_basis, 2)} USD**")
+p_and_l = profit_loss(owner_portfolio.financial_summary()['current_value_usd'], cost_basis)
+st.sidebar.markdown(f"P/L: **${round(p_and_l['usd'], 2)} USD**")
+st.sidebar.markdown(f"P/L: **{round(p_and_l['percent'], 2) * 100} %**")

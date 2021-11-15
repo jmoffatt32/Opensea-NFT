@@ -32,3 +32,10 @@ class Portfolio:
                 financials['cost_basis_usd'] += asset.get_price_purchased()['usd_price']
                 financials['current_value_usd'] += asset.get_current_calc_price()['usd_price']
         return financials
+
+def profit_loss(value, cost_basis):
+    p_and_l = {
+        "usd" : value - cost_basis,
+        "percent" : (value - cost_basis) / cost_basis
+    }
+    return p_and_l
