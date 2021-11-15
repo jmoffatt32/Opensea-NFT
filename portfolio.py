@@ -20,38 +20,15 @@ class Portfolio:
     def get_num_assets(self):
         return len(self.asset_list)
 
-    def portfolio_value_usd(self):
-        usd_value = 0.0
-        for asset in self.asset_list:
-            if asset.get_current_price()['usd_price'] != None:
-                usd_value += asset.get_current_price()['usd_price']
-            else:
-                pass
-        return usd_value
-    
-    def cost_basis_usd(self):
-        usd_value = 0.0
-        for asset in self.asset_list:
-            if asset.get_price_purchased()['usd_price'] != None:
-                usd_value += asset.get_price_purchased()['usd_price']
-            else:
-                pass
-        return usd_value
-
     def financial_summary(self):
         financials = {
             'current_value_usd' : 0.0,
             'cost_basis_usd' : 0.0
         }
         for asset in self.asset_list:
-            if asset.get_price_purchased()['usd_price'] != None:
+            if asset.get_price_purchased()['usd_price'] == None:
+                pass
+            else:
                 financials['cost_basis_usd'] += asset.get_price_purchased()['usd_price']
-            else:
-                pass
-            if asset.get_current_price()['usd_price'] != None:
                 financials['current_value_usd'] += asset.get_current_calc_price()['usd_price']
-            else:
-                pass
-        #financials["profit_loss_usd"] = financials['current_value_usd'] - financials['cost_basis_usd']
-        #financials['profit_loss_percent'] = financials['profit_loss_usd'] / financials['cost_basis_usd']
         return financials
