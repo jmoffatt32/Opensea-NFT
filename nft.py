@@ -68,10 +68,15 @@ else:
                 st.write("No Token Traits")
 
     st.sidebar.subheader("Portfolio Details:")
-    st.sidebar.markdown(f"Value: **${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD**")
+    value = round(owner_portfolio.financial_summary()['current_value_usd'], 2)
+    cost = round(owner_portfolio.financial_summary()['cost_basis_usd'], 2)
+    st.sidebar.markdown(f"Value: **${value} USD**")
+    st.sidebar.markdown(f"Cost Basis: **${cost} USD**")
+    st.sidebar.markdown(f"P/L: **${profit_loss(value, cost)['usd']} USD**")
+    st.sidebar.markdown(f"P/L: **{round(profit_loss(value, cost)['percent'] * 100, 2)}%**")
     st.sidebar.markdown(f"Number of Assets: **{len(owner_portfolio.asset_list)}**")
 
-# st.write(owner_portfolio.asset_list[3].asset_json)
+#st.write(owner_portfolio.asset_list[0].collection.response_json)
 # purchase_json = owner_portfolio.asset_list[3].get_price_purchased()
 # st.write(purchase_json)
 # st.write(owner_portfolio.asset_list[3].purchase_to_usd(purchase_json['date'], purchase_json['symbol']))

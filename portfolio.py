@@ -6,15 +6,24 @@ import requests
 class Portfolio:
     def __init__(self, owner):
         params = {
-            'owner' : owner
+            'owner' : owner,
+            'limit' : 50,
+            'offset' : 0
         }
         r = requests.get('https://api.opensea.io/api/v1/assets', params = params)
-        response = r.json()['assets']
         self.asset_list = []
+        response = r.json()['assets']
         for asset in response:
-            asset_slug = asset['collection']['slug']
-            self.asset_list.append(Asset(asset, asset_slug, owner))
+                asset_slug = asset['collection']['slug']
+                self.asset_list.append(Asset(asset, asset_slug, owner))
         self.username = self.asset_list[0].asset_json['owner']['user']['username']
+        while (len(response) == 50):
+            params['offset'] += 50
+            r = requests.get('https://api.opensea.io/api/v1/assets', params = params)
+            response = r.json()['assets']
+            for asset in response:
+                asset_slug = asset['collection']['slug']
+                self.asset_list.append(Asset(asset, asset_slug, owner))
             
     
     def get_num_assets(self):
