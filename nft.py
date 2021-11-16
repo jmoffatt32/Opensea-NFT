@@ -28,6 +28,7 @@ else:
 
     st.header("Assets:")
     i = 1
+    f = 0
     for asset in owner_portfolio.asset_list:
         i += 1
         st.subheader(f"Collection: {asset.get_token_name()['collection_name']}")
@@ -48,11 +49,14 @@ else:
             if (type(asset.get_price_purchased()['price']) == float):
                 st.write(f"Price Purchased: **{asset.get_price_purchased()['price']} {asset.get_price_purchased()['symbol']} (${asset.get_price_purchased()['usd_price']} USD)**")
                 cost_basis += asset.get_price_purchased()['usd_price']
+                f += 1
             else:
+                flag = True
                 with st.form(f"{i}"):
                     price_purchased = st.text_input("Price Purchased (USD)", key = i)
                     submitted = st.form_submit_button("Submit")
                     if submitted:
+                        f += 1
                         st.write(f"Price Purchased: **${price_purchased} USD**")
                         cost_basis += int(price_purchased)
             try:
@@ -63,9 +67,11 @@ else:
             except:
                 st.write("No Token Traits")
 
-st.sidebar.subheader("Portfolio Details:")
-st.sidebar.markdown(f"Value: **${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD**")
-st.sidebar.markdown(f"Cost Basis: **${round(cost_basis, 2)} USD**")
-p_and_l = profit_loss(owner_portfolio.financial_summary()['current_value_usd'], cost_basis)
-st.sidebar.markdown(f"P/L: **${round(p_and_l['usd'], 2)} USD**")
-st.sidebar.markdown(f"P/L: **{round(p_and_l['percent'], 2) * 100} %**")
+    st.sidebar.subheader("Portfolio Details:")
+    st.sidebar.markdown(f"Value: **${round(owner_portfolio.financial_summary()['current_value_usd'], 2)} USD**")
+    st.sidebar.markdown(f"Number of Assets: **{len(owner_portfolio.asset_list)}**")
+
+# st.write(owner_portfolio.asset_list[3].asset_json)
+# purchase_json = owner_portfolio.asset_list[3].get_price_purchased()
+# st.write(purchase_json)
+# st.write(owner_portfolio.asset_list[3].purchase_to_usd(purchase_json['date'], purchase_json['symbol']))

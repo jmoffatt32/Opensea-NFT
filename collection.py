@@ -12,7 +12,10 @@ class Collection:
                 self.collection_json = r
 
     def get_collection_count(self):
-        return self.collection_json['stats']['count']
+        try:
+            return self.collection_json['stats']['count']
+        except:
+            return 0
 
 
 

@@ -1,6 +1,6 @@
+from streamlit.elements.image import MAXIMUM_CONTENT_WIDTH
 from asset import Asset
 import requests
-
 
 
 class Portfolio:
@@ -39,3 +39,7 @@ def profit_loss(value, cost_basis):
         "percent" : (value - cost_basis) / cost_basis
     }
     return p_and_l
+
+
+
+

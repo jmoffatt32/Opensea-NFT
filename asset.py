@@ -1,5 +1,8 @@
+from datetime import date
 from requests import request
 from collection import Collection
+
+API_KEY = 'XRcvi1wdOpza2JAdKVigSjL5fzXtwhEG'
 
 class Asset:
     def __init__(self, json_data, slug, owner):
@@ -30,7 +33,6 @@ class Asset:
         self.collection = Collection(owner, slug)
         self.collection_count = self.collection.get_collection_count()        
 
-
     def get_token_name(self):
         token_name = {}
         token_name['collection_name'] = self.collection_name
@@ -43,20 +45,32 @@ class Asset:
             if (token['symbol']) == symbol:
                 return token['usd_price']
     
+    def purchase_to_usd(self, date, symbol):
+        if symbol == 'WETH':
+            symbol = 'ETH'
+        url = f"https://api.polygon.io/v1/open-close/crypto/{symbol}/USD/{date}?adjusted=true&apiKey=XRcvi1wdOpza2JAdKVigSjL5fzXtwhEG"
+        response = request('GET', (url)).json()
+        return response['close']
+
     def get_price_purchased(self):
         asset_json = self.asset_json['last_sale']
         last_sale = {}
         try:
-            last_sale['symbol'] = asset_json['payment_token']['symbol']
+            symbol = asset_json['payment_token']['symbol']
+            date = asset_json['event_timestamp'][:10]
+            last_sale['symbol'] = symbol
+            last_sale['date'] = date
             last_sale['decimals'] = int(asset_json['payment_token']['decimals'])
             last_sale['price'] = float(asset_json['total_price']) / (10 ** (last_sale['decimals']))
-            last_sale['usd_price'] = round(last_sale['price'] * self.get_usd(last_sale['symbol']), 2)
+            last_sale['usd_price'] = last_sale['price'] * self.get_usd(last_sale['symbol'])
+            #last_sale['usd_price'] = self.purchase_to_usd(last_sale['date'], last_sale['symbol'])
             return last_sale
         except:
-            last_sale['symbol'] = None
-            last_sale['decimals'] = None
-            last_sale['price'] = None
-            last_sale['usd_price'] = None
+            last_sale['symbol'] = 0
+            last_sale['decimals'] = 0
+            last_sale['price'] = 0
+            last_sale['usd_price'] = 0
+            last_sale['date'] = 0
             return last_sale
 
     def get_rarest_trait(self):
@@ -101,13 +115,16 @@ class Asset:
                 current_price['price'] = round(float(asset_json["stats"]["seven_day_average_price"]), 3)
             else:
                 current_price['price'] = round(float(asset_json["stats"]["thirty_day_average_price"]), 3)
-            rarity = self.get_trait_rarity(self.get_rarest_trait())['trait_rarity_percentage']
-            multiplier = 1 + (.4 - rarity) 
-            current_price['price'] = round(multiplier * current_price['price'], 3)
+            try:
+                rarity = self.get_trait_rarity(self.get_rarest_trait())['trait_rarity_percentage']
+                multiplier = 1 + (.4 - rarity) 
+                current_price['price'] = round(multiplier * current_price['price'], 3)
+            except:
+                pass
             current_price['usd_price'] = round(current_price['price'] * self.get_usd(current_price['symbol']), 2)
             return current_price
         except:
-            current_price['symbol'] = None
-            current_price['price'] = None
-            current_price['usd_price'] = None
+            current_price['symbol'] = 0
+            current_price['price'] = 0
+            current_price['usd_price'] = 0
             return current_price
