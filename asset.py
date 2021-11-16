@@ -65,8 +65,10 @@ class Asset:
             last_sale['date'] = date
             last_sale['decimals'] = int(asset_json['payment_token']['decimals'])
             last_sale['price'] = float(asset_json['total_price']) / (10 ** (last_sale['decimals']))
-            last_sale['usd_price'] = last_sale['price'] * self.get_usd(last_sale['symbol'])
-            #last_sale['usd_price'] = self.purchase_to_usd(last_sale['date'], last_sale['symbol'])
+            try:
+                last_sale['usd_price'] = last_sale['price'] * (self.purchase_to_usd(last_sale['date'], last_sale['symbol']))
+            except:
+                last_sale['usd_price'] = last_sale['price'] * self.get_usd(last_sale['symbol'])
             return last_sale
         except:
             last_sale['symbol'] = 0
