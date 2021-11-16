@@ -31,7 +31,10 @@ class Asset:
         else:
             self.asset_json = '' 
         self.collection = Collection(owner, slug)
-        self.collection_count = self.collection.get_collection_count()        
+        try:
+            self.collection_count = self.collection.get_collection_count()
+        except:
+            self.collection_count = 1    
 
     def get_token_name(self):
         token_name = {}
