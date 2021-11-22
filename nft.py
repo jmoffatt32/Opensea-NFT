@@ -7,7 +7,7 @@ import time
 
 
 #sidebar
-st.sidebar.write("[Survey Link](https://docs.google.com/forms/d/16KnYzMYVY4yC9OUlVAo8Ko867Nm6P_rhZhaXlAf_BUM/prefill)")
+st.sidebar.subheader("[Survey Link](https://docs.google.com/forms/d/16KnYzMYVY4yC9OUlVAo8Ko867Nm6P_rhZhaXlAf_BUM/prefill)")
 owner = st.sidebar.text_input('Owner (Wallet Address)', key = 1)
 
 #header
