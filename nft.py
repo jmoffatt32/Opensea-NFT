@@ -21,6 +21,7 @@ percent_complete = 0
 #body
 if not owner:
     st.subheader("Some addresses to try:")
+    st.markdown("**(Copy and paste into owner field)**")
     st.write("0x0864224f3cc570ab909ebf619f7583ef4a50b826")
     st.write("0xca8b73101e12c03e4e9eacf0e180fc10edf859e2")
     st.write("0x6a83d1a68fb09c28b3c70d37b458231ad3f0ec71")
