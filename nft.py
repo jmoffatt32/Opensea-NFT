@@ -3,22 +3,27 @@ import streamlit as st
 from asset import Asset
 from portfolio import Portfolio, profit_loss
 from collection import Collection
+import time
 
 
 #sidebar
+st.sidebar.write("[Survey Link](https://docs.google.com/forms/d/16KnYzMYVY4yC9OUlVAo8Ko867Nm6P_rhZhaXlAf_BUM/prefill)")
 owner = st.sidebar.text_input('Owner (Wallet Address)', key = 1)
 
 #header
-st.header("Open Sea NFT API Explorer")
+st.header("DeFi-Able")
 
 #query params
 params = {}
 if owner: 
     params['owner'] = owner
-
+percent_complete = 0
 #body
 if not owner:
-    pass
+    st.subheader("Some addresses to try:")
+    st.write("0x0864224f3cc570ab909ebf619f7583ef4a50b826")
+    st.write("0xca8b73101e12c03e4e9eacf0e180fc10edf859e2")
+    st.write("0x6a83d1a68fb09c28b3c70d37b458231ad3f0ec71")
 else:
     owner_portfolio = Portfolio(owner)
     mekaverse_collection = Collection(owner, 'mekaverse')
@@ -29,8 +34,10 @@ else:
     st.header("Assets:")
     i = 1
     f = 0
+    #my_bar = st.progress(percent_complete)
     for asset in owner_portfolio.asset_list:
         i += 1
+        #my_bar.progress(percent_complete + i)
         st.subheader(f"Collection: {asset.get_token_name()['collection_name']}")
         st.write(f"Token ID: {asset.get_token_name()['token_id']}")
         st.write(f"Name: {asset.get_token_name()['name']}")
