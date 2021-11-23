@@ -80,7 +80,7 @@ else:
     cost = round(owner_portfolio.financial_summary()['cost_basis_usd'], 2)
     st.sidebar.markdown(f"Value: **${value} USD**")
     st.sidebar.markdown(f"Cost Basis: **${cost} USD**")
-    st.sidebar.markdown(f"P/L: **${profit_loss(value, cost)['usd']} USD**")
+    st.sidebar.markdown(f"P/L: **${round(profit_loss(value, cost)['usd'], 2)} USD**")
     st.sidebar.markdown(f"P/L: **{round(profit_loss(value, cost)['percent'] * 100, 2)}%**")
     st.sidebar.markdown(f"Number of Assets: **{len(owner_portfolio.asset_list)}**")
 
